@@ -46,7 +46,10 @@ var playState = {
 
 		this.cursor = game.input.keyboard.createCursorKeys();
 		this.createWorld();
-		console.log('hello again');
+
+		this.jumpSound = game.add.audio('jump');
+		this.coinSound = game.add.audio('coin');
+		this.deadSound = game.add.audio('dead');
 	},
 
 	update: function() {
@@ -116,6 +119,7 @@ var playState = {
 		if (this.cursor.up.isDown && this.player.body.touching.down) {
 			//Move the player upward (jump)
 			this.player.body.velocity.y = -320;
+			this.jumpSound.play();
 		}
 	},
 
@@ -128,6 +132,9 @@ var playState = {
 
 		//Change the coin position
 		this.updateCoinPosition();
+
+		//Play Sound
+		this.coinSound.play();
 	},
 
 	updateCoinPosition: function() {
@@ -182,6 +189,7 @@ var playState = {
 
 	playerDie: function() {
 		game.state.start('menu');
+		this.deadSound.play();
 	}
 
 };

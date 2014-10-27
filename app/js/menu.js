@@ -3,7 +3,6 @@ var menuState = {
 	create: function() {
 		//Add a Background Image
 		game.add.image(0,0, 'background');
-
 		//Display the name of the game
 		var nameLabel = game.add.text(game.world.centerX, 80, 'Super Coin Box', {
 			font: '50px Arial',

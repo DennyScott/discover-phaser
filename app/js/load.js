@@ -23,6 +23,15 @@
 
 		//Load a new asset that we will use in the menu state
 		game.load.image('background', 'assets/background.png');
+
+		//Sound when the player jumps
+		game.load.audio('jump', ['assets/jump.ogg', 'assets/jump.mp3']);
+
+		//Sound when the player takes a coin
+		game.load.audio('coin', ['assets/coin.ogg', 'assets/coin.mp3']);
+
+		//Sound when the player dies
+		game.load.audio('dead', ['assets/dead.ogg', 'assets/dead.mp3']);
  	},
 
  	create: function() {
