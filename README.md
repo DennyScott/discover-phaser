@@ -1,7 +1,3 @@
-# Phaser Seed Project
+Demo Phaser Game Built from the Book "Discover Phaser". It can be found here: http://www.lessmilk.com/.
 
-##Cocoon Instructions
-* sudo npm install -g cocoonjs
-* cocoonjs platform add android
-* cocoonjs plugin add com.ludei.webview.plus
-* cocoonjs build
+Highly Recommended!
