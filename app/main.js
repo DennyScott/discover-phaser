@@ -11,6 +11,7 @@ var mainState = {
 		game.load.image('player', 'assets/player.png');
 		game.load.image('wallV', 'assets/wallVertical.png');
 		game.load.image('wallH', 'assets/wallHorizontal.png');
+		game.load.image('coin', 'assets/coin.png');
 
 	},
 	create: function() {
@@ -19,6 +20,24 @@ var mainState = {
 
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		game.stage.backgroundColor = '#3498db';
+
+		//Display the Score
+		this.scoreLabel = game.add.text(30, 30, 'score: 0', {
+			font: '18px Arial',
+			fill: '#ffffff'
+		});
+
+		//Initalize the score variable
+		this.score = 0;
+
+		//Display the Coin
+		this.coin = game.add.sprite(60, 140, 'coin');
+
+		//Ade Arcade physics to the coin
+		game.physics.arcade.enable(this.coin);
+
+		//Set the anchor point of the coin to its center
+		this.coin.anchor.setTo(0.5, 0.5);
 
 		//Create a local variable
 		this.player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
@@ -41,11 +60,16 @@ var mainState = {
 		//Tell Phaser that the player and the walls should collide
 		game.physics.arcade.collide(this.player, this.walls);
 
+		//Tell Phaser that if an item and a player overlaps call takeCoin()
+		game.physics.arcade.overlap(this.player, this.coin, this.takeCoin, null, this);
+
 		this.movePlayer();
 
 		if(!this.player.inWorld) {
 			this.playerDie();
 		}
+
+		
 	},
 
 	movePlayer: function() {
@@ -72,6 +96,41 @@ var mainState = {
 			//Move the player upward (jump)
 			this.player.body.velocity.y = -320;
 		}
+	},
+
+	takeCoin: function(player, coin) {
+		//Increase the score by 5
+		this.score += 5;
+
+		//Update the score label
+		this.scoreLabel.text = 'score: ' + this.score;
+
+		//Change the coin position
+		this.updateCoinPosition();
+	},
+
+	updateCoinPosition: function() {
+		//Store all the possible coin positions in an array
+		var coinPosition = [
+			{x: 140, y: 60}, {x: 360, y: 60}, //Top Row
+			{x: 60, y: 140}, {x: 440, y: 140}, //Middle Row
+			{x: 130, y:300}, {x: 370, y: 300} //Bottom Row
+		];
+
+		//Remove the current coin position from teh array
+		//Otherwise the coin could appear at the same spot twice in a row
+		for (var i = 0; i < coinPosition.length; i++) {
+			if(coinPosition[i].x === this.coin.x) {
+				coinPosition.splice(i, 1);
+			}
+		}
+
+		//Randomly select a position from the array
+		var newPosition = coinPosition[
+		game.rnd.integerInRange(0, coinPosition.length-1)];
+
+		//Set the new position of the coin
+		this.coin.reset(newPosition.x, newPosition.y);
 	},
 
 	createWorld: function() {
