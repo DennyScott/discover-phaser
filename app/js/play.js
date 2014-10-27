@@ -1,20 +1,6 @@
 //We create our only state
-var mainState = {
+var playState = {
 
-	// Here we add all the functions we need for our state
-	// For this project we will just have 3 functions
-
-	preload: function() {
-		// This function will be executed at the beginning 
-		// That's where we load the game's assets
-
-		game.load.image('player', 'assets/player.png');
-		game.load.image('wallV', 'assets/wallVertical.png');
-		game.load.image('wallH', 'assets/wallHorizontal.png');
-		game.load.image('coin', 'assets/coin.png');
-		game.load.image('enemy', 'assets/enemy.png');
-
-	},
 	create: function() {
 		// This function is called after the preload function
 		//  Here we set up the game, display sprites, etc.
@@ -37,7 +23,7 @@ var mainState = {
 		game.time.events.loop(2200, this.addEnemy, this);
 
 		//Initalize the score variable
-		this.score = 0;
+		game.global.score = 0;
 
 		//Display the Coin
 		this.coin = game.add.sprite(60, 140, 'coin');
@@ -135,10 +121,10 @@ var mainState = {
 
 	takeCoin: function(player, coin) {
 		//Increase the score by 5
-		this.score += 5;
+		game.global.score += 5;
 
 		//Update the score label
-		this.scoreLabel.text = 'score: ' + this.score;
+		this.scoreLabel.text = 'score: ' + game.global.score;
 
 		//Change the coin position
 		this.updateCoinPosition();
@@ -195,7 +181,7 @@ var mainState = {
 	},
 
 	playerDie: function() {
-		game.state.start('main');
+		game.state.start('menu');
 	}
 
 };
@@ -205,7 +191,17 @@ var mainState = {
 // We initialising Phaser
 var game = new Phaser.Game(500, 340, Phaser.AUTO, 'gameDiv');
 
+//Define our 'global variable'
+game.global = {
+	score: 0
+};
 
-// And finally we tell Phaser to add and start our 'main' state
-game.state.add('main', mainState);
-game.state.start('main');
+//Add all the states
+game.state.add('boot', bootState);
+game.state.add('load', loadState);
+game.state.add('menu', menuState);
+game.state.add('play', playState);
+
+
+//Start the boot state
+game.state.start('boot');
