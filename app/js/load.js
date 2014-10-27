@@ -16,12 +16,12 @@
 
  		//Load all our assets
  		game.load.spritesheet('player', 'assets/player2.png', 20, 20);
-		game.load.image('wallV', 'assets/wallVertical.png');
-		game.load.image('wallH', 'assets/wallHorizontal.png');
 		game.load.image('coin', 'assets/coin.png');
 		game.load.image('enemy', 'assets/enemy.png');
 		game.load.image('pixel', 'assets/pixel.png');
 		game.load.spritesheet('mute', 'assets/muteButton.png', 28, 22);
+		game.load.image('tileset', 'assets/tileset.png');
+		game.load.tilemap('map', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
 
 		//Load a new asset that we will use in the menu state
 		game.load.image('background', 'assets/background.png');
