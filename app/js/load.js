@@ -20,7 +20,8 @@
 		game.load.image('wallH', 'assets/wallHorizontal.png');
 		game.load.image('coin', 'assets/coin.png');
 		game.load.image('enemy', 'assets/enemy.png');
-
+		game.load.image('pixel', 'assets/pixel.png');
+		
 		//Load a new asset that we will use in the menu state
 		game.load.image('background', 'assets/background.png');
 

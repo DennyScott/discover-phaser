@@ -56,6 +56,23 @@ var playState = {
 		this.jumpSound = game.add.audio('jump');
 		this.coinSound = game.add.audio('coin');
 		this.deadSound = game.add.audio('dead');
+
+		//Create the emitter with 15 particles. We don't need to set the x and y
+		//Since we don't know where to do the explosions yet
+		this.emitter = game.add.emitter(0, 0, 15);
+
+		//Set the 'pixel' image for the particles
+		this.emitter.makeParticles('pixel');
+
+		//Set the y speed of the partciels between -150 and 150
+		//The speed will be randomly picked between -150 and 150 for each particle
+		this.emitter.setYSpeed(-150, 150);
+
+		//Do the same for the X Speed
+		this.emitter.setYSpeed(-150, 150);
+
+		//Use no gravity for the particles
+		this.emitter.gravity = 0;
 	},
 
 	update: function() {
@@ -140,6 +157,9 @@ var playState = {
 		//Update the score label
 		this.scoreLabel.text = 'score: ' + game.global.score;
 
+		game.add.tween(this.player.scale).to({x: 1.3, y: 1.3}, 50).to({x:1, y:1}, 150)
+			.start();
+
 		//Change the coin position
 		this.updateCoinPosition();
 
@@ -169,6 +189,10 @@ var playState = {
 
 		//Set the new position of the coin
 		this.coin.reset(newPosition.x, newPosition.y);
+
+		//Scale the coin to 0 to make it invisible
+		this.coin.scale.setTo(0,0);
+		game.add.tween(this.coin.scale).to({x: 1, y: 1}, 300).start();
 	},
 
 	createWorld: function() {
@@ -197,9 +221,33 @@ var playState = {
 		this.walls.setAll('body.immovable', true);
 	},
 
-	playerDie: function() {
+	startMenu: function() {
 		game.state.start('menu');
+	},
+
+	playerDie: function() {
+
+		//If the player is already dead, do nothing
+		if(!this.player.alive){
+			return;
+		}
+
+		//Kill the player to make it disappear from the screen
+		this.player.kill();
+
+		//Start the death sound
 		this.deadSound.play();
+
+		//Set the position of the emitter on the player
+		this.emitter.x = this.player.x;
+		this.emitter.y = this.player.y;
+
+		//Start the emiiter, by exploding 15 particles that will live for 600ms
+		this.emitter.start(true, 600, null, 15);
+
+		// Call the 'startMenu' function in 1000ms
+		game.time.events.add(1000, this.startMenu, this);
+		
 	}
 
 };
