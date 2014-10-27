@@ -7,6 +7,8 @@ var mainState = {
 	preload: function() {
 		// This function will be executed at the beginning 
 		// That's where we load the game's assets
+		
+		game.load.image('player', 'assets/player.png');
 
 	},
 	create: function() {
@@ -15,6 +17,9 @@ var mainState = {
 		
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		game.stage.backgroundColor = '#3498db';
+
+		//Create a local variable
+		this.player = game.add.sprite(game.world.centerX, game.world.centerY, 'player');
 	},
 
 	update: function() {
