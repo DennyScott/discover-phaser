@@ -19,7 +19,7 @@ var menuState = {
 
 		//Display the name of the game
 		var nameLabel = game.add.text(game.world.centerX, -50, 'Super Coin Box', {
-			font: '50px Arial',
+			font: '70px Geo',
 			fill: '#ffffff'
 		});
 		nameLabel.anchor.setTo(0.5, 0.5);
