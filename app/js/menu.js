@@ -3,6 +3,20 @@ var menuState = {
 	create: function() {
 		//Add a Background Image
 		game.add.image(0,0, 'background');
+		
+		//If 'bestScore' is not defined
+		//It means that this is the first time the game is played
+		if(!localStorage.getItem('bestScore')) {
+			//Then set the best score to 0
+			localStorage.setItem('bestScore', 0);
+		}
+
+		//If the score is higher then the best score
+		if (game.global.score > localStorage.getItem('bestScore')) {
+			// Then update the best score
+			localStorage.setItem('bestScore', game.global.score);
+		}
+
 		//Display the name of the game
 		var nameLabel = game.add.text(game.world.centerX, -50, 'Super Coin Box', {
 			font: '50px Arial',
@@ -14,11 +28,14 @@ var menuState = {
 		game.add.tween(nameLabel).to({y: 80}, 1000).easing(Phaser.Easing.Bounce.Out)
 			.start();
 
+		var text = 'score: ' + game.global.score + '\nbest score: ' +
+			localStorage.getItem('bestScore');	
+
 		//Show the score at the center of the screen
-		var scoreLabel = game.add.text(game.world.centerX, game.world.centerY,
-			'score: ' + game.global.score, {
+		var scoreLabel = game.add.text(game.world.centerX, game.world.centerY, text, {
 				font: '25px Arial',
-				fill: '#ffffff'
+				fill: '#ffffff',
+				align: 'center'
 			});
 		scoreLabel.anchor.setTo(0.5, 0.5);
 
@@ -38,6 +55,8 @@ var menuState = {
 
 		//When the 'upKey' is pressed, it will call the 'start' function once
 		upKey.onDown.addOnce(this.start, this);
+
+		
 	},
 
 	start: function() {

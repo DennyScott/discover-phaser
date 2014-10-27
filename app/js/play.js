@@ -19,8 +19,8 @@ var playState = {
 		//The enemies are 'dead' by default, so they are not visible in the game
 		this.enemies.createMultiple(10, 'enemy');
 
-		//call 'addEnemy' every 2.2 seconds
-		game.time.events.loop(2200, this.addEnemy, this);
+		//Contains the time of the next enemy creation
+		this.nextEnemy = 0;
 
 		//Initalize the score variable
 		game.global.score = 0;
@@ -97,6 +97,21 @@ var playState = {
 			this.playerDie();
 		}
 
+		//If the 'nextEnemy' time has passed
+		if(this.nextEnemy < game.time.now) {
+			//Define our variables
+			var start = 4000, end = 1000, score = 100;
+
+			var delay = Math.max(start - (start-end) * game.global.score/score, end);
+
+			//We add a new enemy
+			this.addEnemy();
+
+			//And we update 'nextEnemy' to have a new enemy in 2.2 seconds
+			this.nextEnemy = game.time.now + delay; 
+		}
+
+		
 		
 	},
 
