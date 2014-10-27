@@ -63,6 +63,7 @@ var mainState = {
 
 		this.cursor = game.input.keyboard.createCursorKeys();
 		this.createWorld();
+		console.log('hello again');
 	},
 
 	update: function() {
