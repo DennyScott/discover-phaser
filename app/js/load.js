@@ -21,7 +21,8 @@
 		game.load.image('coin', 'assets/coin.png');
 		game.load.image('enemy', 'assets/enemy.png');
 		game.load.image('pixel', 'assets/pixel.png');
-		
+		game.load.spritesheet('mute', 'assets/muteButton.png', 28, 22);
+
 		//Load a new asset that we will use in the menu state
 		game.load.image('background', 'assets/background.png');
 

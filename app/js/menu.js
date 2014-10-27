@@ -50,6 +50,18 @@ var menuState = {
 		game.add.tween(startLabel).to({angle: -2}, 500).to({angle:2}, 500).loop()
 			.start();
 
+		//Add the mute button that calls the 'toggleSound' function when pressed
+		this.muteButton = game.add.button(20, 20, 'mute', this.toggleSound, this);
+
+		//If the game is already muted
+		if(game.sound.mute) {
+			//Change the frame to display the speaker with no sound
+			this.muteButton.frame = 1;
+		}
+
+		//If the mouse is over the button it becomes a hand cursor
+		this.muteButton.input.useHandCursor = true;
+
 		//Create a new Phaser keyboard variable, the up arrow key
 		var upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
 
@@ -62,5 +74,15 @@ var menuState = {
 	start: function() {
 		//Start the actual game
 		game.state.start('play');
+	},
+
+	//Function called when the 'muteButton' is pressed
+	toggleSound: function() {
+		//Switch the Phaser sound variable from true to false, or false to true
+		// When 'game.sound.mute = true', Phaser will mute the game
+		game.sound.mute = ! game.sound.mute;
+
+		//Change the frame of the button
+		this.muteButton.frame = game.sound.mute ? 1 : 0;
 	}
 }
