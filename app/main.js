@@ -12,6 +12,7 @@ var mainState = {
 		game.load.image('wallV', 'assets/wallVertical.png');
 		game.load.image('wallH', 'assets/wallHorizontal.png');
 		game.load.image('coin', 'assets/coin.png');
+		game.load.image('enemy', 'assets/enemy.png');
 
 	},
 	create: function() {
@@ -26,6 +27,17 @@ var mainState = {
 			font: '18px Arial',
 			fill: '#ffffff'
 		});
+
+		//Create an enemy group with arcade physics
+		this.enemies = game.add.group();
+		this.enemies.enableBody = true;
+
+		//Create 10 enemies with the 'enemy' image in the group
+		//The enemies are 'dead' by default, so they are not visible in the game
+		this.enemies.createMultiple(10, 'enemy');
+
+		//call 'addEnemy' every 2.2 seconds
+		game.time.events.loop(2200, this.addEnemy, this);
 
 		//Initalize the score variable
 		this.score = 0;
@@ -60,8 +72,14 @@ var mainState = {
 		//Tell Phaser that the player and the walls should collide
 		game.physics.arcade.collide(this.player, this.walls);
 
+		//Make the enemies and the Walls collide
+		game.physics.arcade.collide(this.enemies, this.walls);
+
 		//Tell Phaser that if an item and a player overlaps call takeCoin()
 		game.physics.arcade.overlap(this.player, this.coin, this.takeCoin, null, this);
+
+		//Call the playerDie function when the player and an enemy overlap
+		game.physics.arcade.overlap(this.player, this.enemies, this.playerDie, null, this);
 
 		this.movePlayer();
 
@@ -70,6 +88,25 @@ var mainState = {
 		}
 
 		
+	},
+
+	addEnemy: function() {
+		//Get the first dead enemy of the group
+		var enemy = this.enemies.getFirstDead();
+
+		//If there isn't any dead Enemy, do nothing
+		if (!enemy) {
+			return ;
+		}
+
+		//Initalize the enemy
+		enemy.anchor.setTo(0.5, 1);
+		enemy.reset(game.world.centerX, 0);
+		enemy.body.gravity.y = 500;
+		enemy.body.velocity.x = 100 * Phaser.Math.randomSign();
+		enemy.body.bounce.x = 1;
+		enemy.checkWorldBounds = true;
+		enemy.outOfBoundsKill = true;
 	},
 
 	movePlayer: function() {
