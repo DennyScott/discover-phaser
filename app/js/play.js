@@ -44,6 +44,12 @@ var playState = {
 		//Add vertical gravity to the player
 		this.player.body.gravity.y = 500;
 
+		//Create the 'right' animation by looping the frame 1 and 2
+		this.player.animations.add('right', [1,2], 8, true);
+
+		//Create the 'left' animation by looping the frame 3 and 4
+		this.player.animations.add('left', [3,4], 8, true);
+
 		this.cursor = game.input.keyboard.createCursorKeys();
 		this.createWorld();
 
@@ -101,18 +107,22 @@ var playState = {
 		if (this.cursor.left.isDown) {
 			//Move the player to the left
 			this.player.body.velocity.x = -200;
+			this.player.animations.play('left');
 		}
 
 		//If the right arrow key is pressed
 		else if (this.cursor.right.isDown) {
 			//Move the player to the right
 			this.player.body.velocity.x = 200;
+			this.player.animations.play('right');
 		}
 
 		//If neither the right or left arrow key is pressed
 		else {
 			//Stop the player
 			this.player.body.velocity.x = 0;
+			this.player.animations.stop(); //Stop the animation
+			this.player.frame = 0; //Set the player frame to 0 (stand still)
 		}
 
 		//If the up arrow key is pressed and the player is touching the ground
